@@ -10,14 +10,17 @@
   "dependencies": {
     "antd": "^2.10.4",
     "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "typeface-merriweather-sans": "^0.0.22"
   },
   "scripts": {
     "antd-theme": "lessc --clean-css public/antd-theme.less public/antd.min.css",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "yarn build && now build/ --public"
   }
 }
