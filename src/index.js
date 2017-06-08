@@ -6,8 +6,9 @@ import LocaleProvider from 'antd/lib/locale-provider'
 import 'typeface-merriweather-sans'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 
-import DatePicker from 'antd/lib/date-picker'
-import message from 'antd/lib/message'
+import Menu from 'Menu'
+
+import { DatePicker, message } from './antd'
 
 class Datepicker extends React.Component {
     constructor(props) {
@@ -22,8 +23,9 @@ class Datepicker extends React.Component {
     }
     render() {
         return (
-            <div style={{ width: 400, margin: '100px auto' }}>
-                <DatePicker onChange={value => this.handleChange(value)} />
+            <div>
+                <h1>Datepicker</h1>
+                <DatePicker style={{ marginTop: 20 }} onChange={value => this.handleChange(value)} />
                 <div style={{ marginTop: 20 }}>Date: {this.state.date && this.state.date.toString()}</div>
             </div>
         )
@@ -36,13 +38,21 @@ const Home = () =>
         <Link to="datepicker">Datepicker</Link>
     </div>
 
+const routes = {
+    '/': Home,
+    '/datepicker': Datepicker,
+}
+
+const logout = () => {
+    console.log('logout')
+}
+
 ReactDOM.render(
     <LocaleProvider locale={enUS}>
         <BrowserRouter>
-            <div>
-                <Route exact path="/" component={Home} />
-                <Route path="/datepicker" component={Datepicker} />
-            </div>
+            <Menu routes={routes} onLogout={logout}>
+                {Object.keys(routes).map(path => <Route key={path} exact path={path} component={routes[path]} />)}
+            </Menu>
         </BrowserRouter>
     </LocaleProvider>,
     document.getElementById('root'),
