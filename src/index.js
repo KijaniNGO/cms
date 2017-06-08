@@ -4,11 +4,12 @@ import registerServiceWorker from './registerServiceWorker'
 import enUS from 'antd/lib/locale-provider/en_US'
 import LocaleProvider from 'antd/lib/locale-provider'
 import 'typeface-merriweather-sans'
+import { BrowserRouter, Route, Link } from 'react-router-dom'
 
 import DatePicker from 'antd/lib/date-picker'
 import message from 'antd/lib/message'
 
-class App extends React.Component {
+class Datepicker extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -29,9 +30,20 @@ class App extends React.Component {
     }
 }
 
+const Home = () =>
+    <div>
+        <h1>Hello World</h1>
+        <Link to="datepicker">Datepicker</Link>
+    </div>
+
 ReactDOM.render(
     <LocaleProvider locale={enUS}>
-        <App />
+        <BrowserRouter>
+            <div>
+                <Route exact path="/" component={Home} />
+                <Route path="/datepicker" component={Datepicker} />
+            </div>
+        </BrowserRouter>
     </LocaleProvider>,
     document.getElementById('root'),
 )
