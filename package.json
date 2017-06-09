@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "graphcool": "^0.5.3",
     "less": "^2.7.2",
     "less-plugin-clean-css": "^1.5.1",
     "react-scripts": "1.0.7"
@@ -12,6 +13,7 @@
     "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
+    "react-apollo": "^1.4.2",
     "react-dom": "^15.5.4",
     "react-router-dom": "^4.1.1",
     "typeface-merriweather-sans": "^0.0.22"

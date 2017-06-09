@@ -4,11 +4,30 @@ import registerServiceWorker from './registerServiceWorker'
 import enUS from 'antd/lib/locale-provider/en_US'
 import LocaleProvider from 'antd/lib/locale-provider'
 import 'typeface-merriweather-sans'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo'
 
 import Menu from 'Menu'
+import Login from 'Login'
 
 import { DatePicker, message } from './antd'
+
+const apolloClient = new ApolloClient({
+    networkInterface: createNetworkInterface({ uri: process.env.REACT_APP_API_URL }).use([
+        {
+            applyMiddleware(req, next) {
+                if (!req.options.headers) {
+                    req.options.headers = {}
+                }
+                // get the authentication token from local storage if it exists
+                if (localStorage.getItem('graphcoolToken')) {
+                    req.options.headers.authorization = `Bearer ${localStorage.getItem('graphcoolToken')}`
+                }
+                next()
+            },
+        },
+    ]),
+})
 
 class Datepicker extends React.Component {
     constructor(props) {
@@ -38,8 +57,12 @@ const Home = () =>
         <Link to="datepicker">Datepicker</Link>
     </div>
 
+const PageNotFound = () =>
+    <div>
+        <h1>Oops, that page doesn't exist</h1>
+    </div>
+
 const routes = {
-    '/': Home,
     '/datepicker': Datepicker,
 }
 
@@ -48,13 +71,38 @@ const logout = () => {
 }
 
 ReactDOM.render(
-    <LocaleProvider locale={enUS}>
-        <BrowserRouter>
-            <Menu routes={routes} onLogout={logout}>
-                {Object.keys(routes).map(path => <Route key={path} exact path={path} component={routes[path]} />)}
-            </Menu>
-        </BrowserRouter>
-    </LocaleProvider>,
+    <ApolloProvider client={apolloClient}>
+        <LocaleProvider locale={enUS}>
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path="/login" component={Login} />
+                    <Route
+                        exact
+                        path="/"
+                        render={() =>
+                            <Menu routes={routes} onLogout={logout}>
+                                <Home />
+                            </Menu>}
+                    />,
+                    {Object.keys(routes).map(path =>
+                        <Route
+                            key={path}
+                            path={path}
+                            render={() => {
+                                const Component = routes[path]
+                                return (
+                                    <Menu routes={routes} onLogout={logout}>
+                                        <Component />
+                                    </Menu>
+                                )
+                            }}
+                        />,
+                    )}
+                    <Route component={PageNotFound} />
+                </Switch>
+            </BrowserRouter>
+        </LocaleProvider>
+    </ApolloProvider>,
     document.getElementById('root'),
 )
 
