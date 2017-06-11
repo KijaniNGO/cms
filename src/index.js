@@ -10,7 +10,7 @@ import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apol
 import Menu from 'Menu'
 import Login from 'Login'
 
-import { DatePicker, message } from './antd'
+import { Datepicker, Home, PageNotFound } from './Pages'
 
 const apolloClient = new ApolloClient({
     networkInterface: createNetworkInterface({ uri: process.env.REACT_APP_API_URL }).use([
@@ -29,76 +29,39 @@ const apolloClient = new ApolloClient({
     ]),
 })
 
-class Datepicker extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            date: '',
-        }
-    }
-    handleChange(date) {
-        message.info(`Selected Date: ${date && date.toString()}`)
-        this.setState({ date })
-    }
-    render() {
-        return (
-            <div>
-                <h1>Datepicker</h1>
-                <DatePicker style={{ marginTop: 20 }} onChange={value => this.handleChange(value)} />
-                <div style={{ marginTop: 20 }}>Date: {this.state.date && this.state.date.toString()}</div>
-            </div>
-        )
-    }
-}
-
-const Home = () =>
-    <div>
-        <h1>Hello World</h1>
-        <Link to="datepicker">Datepicker</Link>
-    </div>
-
-const PageNotFound = () =>
-    <div>
-        <h1>Oops, that page doesn't exist</h1>
-    </div>
-
 const routes = {
     '/datepicker': Datepicker,
 }
 
-const logout = () => {
-    console.log('logout')
+const login = (username, password, router) => {
+    console.log('logged out')
+    router.history.push('/')
 }
+
+const logout = router => {
+    console.log('logged out')
+    window.localStorage.removeItem('graphcoolToken')
+    router.history.push('/login')
+}
+
+const LoggedOutRoute = () => <Login onLogin={login} />
+
+const LoggedInRoutes = () =>
+    <Menu routes={routes} onLogout={logout}>
+        <Switch>
+            <Route path="/" component={Home} />
+            {Object.keys(routes).map(path => <Route key={path} path={path} component={routes[path]} />)}
+            <Route component={PageNotFound} />
+        </Switch>
+    </Menu>
 
 ReactDOM.render(
     <ApolloProvider client={apolloClient}>
         <LocaleProvider locale={enUS}>
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/login" component={Login} />
-                    <Route
-                        exact
-                        path="/"
-                        render={() =>
-                            <Menu routes={routes} onLogout={logout}>
-                                <Home />
-                            </Menu>}
-                    />,
-                    {Object.keys(routes).map(path =>
-                        <Route
-                            key={path}
-                            path={path}
-                            render={() => {
-                                const Component = routes[path]
-                                return (
-                                    <Menu routes={routes} onLogout={logout}>
-                                        <Component />
-                                    </Menu>
-                                )
-                            }}
-                        />,
-                    )}
-                    <Route component={PageNotFound} />
+                    <Route exact path="/login" component={LoggedOutRoute} />
+                    <Route path="/" component={LoggedInRoutes} />
                 </Switch>
             </BrowserRouter>
         </LocaleProvider>

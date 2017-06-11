@@ -24,7 +24,7 @@ const AdminMenu = ({ children, routes, onLogout }, { router }) =>
                         case 'WEBSITE':
                             return (window.location.href = 'http://kijani.ngo')
                         case 'LOGOUT':
-                            return onLogout()
+                            return onLogout(router)
                         default:
                             return router.history.push(key)
                     }
@@ -73,7 +73,7 @@ AdminMenu.defaultProps = {
 }
 
 AdminMenu.propTypes = {
-    onLogout: PropTypes.func,
+    onLogout: PropTypes.func.isRequired,
 }
 
 AdminMenu.contextTypes = {
