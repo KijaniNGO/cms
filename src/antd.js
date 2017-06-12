@@ -7,7 +7,9 @@ export { default as Icon } from 'antd/lib/icon'
 export { default as Button } from 'antd/lib/button'
 export { default as Input } from 'antd/lib/input'
 export { default as Spin } from 'antd/lib/spin'
+export { default as Checkbox } from 'antd/lib/checkbox'
 
 import Form from 'antd/lib/form'
-const withForm = Form.create()
-export { Form, withForm }
+export const FormItem = Form.Item
+export const withForm = Form.create()
+export { Form }

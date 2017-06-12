@@ -8,6 +8,7 @@ export default () =>
             padding: '2rem',
             background: '#404040',
             minHeight: '100vh'
-        }}>
-        <Spin size="large" tip={<p><br />loading...</p>} delay={0} style={{ marginTop: '100px' }} />
+        }}
+    >
+        <Spin size="large" tip={<p><br />Loading...</p>} delay={0} style={{ marginTop: '100px' }} />
     </Layout>
