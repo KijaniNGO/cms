@@ -5,5 +5,9 @@ export { default as Menu } from 'antd/lib/menu'
 export { default as Breadcrumb } from 'antd/lib/breadcrumb'
 export { default as Icon } from 'antd/lib/icon'
 export { default as Button } from 'antd/lib/button'
-export { default as Form } from 'antd/lib/form'
 export { default as Input } from 'antd/lib/input'
+export { default as Spin } from 'antd/lib/spin'
+
+import Form from 'antd/lib/form'
+const withForm = Form.create()
+export { Form, withForm }

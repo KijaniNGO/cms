@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { upperFirst } from 'lodash'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon, Button } from './antd'
 
 import Logo from 'Logo'
@@ -10,12 +10,14 @@ const getRootRoutes = routes => {
     return Object.keys(routes)
         .filter(route => {
             let parts = route.split('/')
-            return (parts.length === 2 && parts[1] !== '') || (parts.length === 3 && parts[3] === '')
+            return (
+                (parts.length === 2 && parts[1] !== '') || (parts.length === 3 && parts[3] === '')
+            )
         })
         .map(route => ({ name: upperFirst(route.split('/')[1]), href: route }))
 }
 
-const AdminMenu = ({ children, routes, onLogout }, { router }) =>
+const AdminMenu = withRouter(({ children, routes, onLogout, history }) =>
     <Layout style={{ minHeight: '100vh' }}>
         <Layout.Sider collapsible collapsedWidth="42" breakpoint="sm">
             <Menu
@@ -24,14 +26,14 @@ const AdminMenu = ({ children, routes, onLogout }, { router }) =>
                         case 'WEBSITE':
                             return (window.location.href = 'http://kijani.ngo')
                         case 'LOGOUT':
-                            return onLogout(router)
+                            return onLogout()
                         default:
-                            return router.history.push(key)
+                            return history.push(key)
                     }
                 }}
                 theme="dark"
                 mode="inline"
-                defaultSelectedKeys={[router.history.location.pathname]}
+                defaultSelectedKeys={[history.location.pathname]}
             >
                 <Menu.Item key="WEBSITE" style={{ height: '72px', marginLeft: '10px' }}>
                     <Logo width="123px" withName />
@@ -53,9 +55,9 @@ const AdminMenu = ({ children, routes, onLogout }, { router }) =>
         </Layout.Sider>
         <Layout style={{ padding: '0 24px 24px' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Button onClick={() => router.history.goBack()} icon="left-circle-o" />
+                <Button onClick={() => history.goBack()} icon="left-circle-o" />
                 <Breadcrumb style={{ margin: '12px 0', width: '80%' }}>
-                    {router.history.location.pathname.split('/').map((item, i, arr) =>
+                    {history.location.pathname.split('/').map((item, i, arr) =>
                         <Breadcrumb.Item key={item}>
                             <Link to={arr.slice(0, i + 1).join('/') + '/'}>{upperFirst(item)}</Link>
                         </Breadcrumb.Item>,
@@ -66,23 +68,11 @@ const AdminMenu = ({ children, routes, onLogout }, { router }) =>
                 {children}
             </Layout.Content>
         </Layout>
-    </Layout>
-
-AdminMenu.defaultProps = {
-    pathname: '/default/',
-}
+    </Layout>,
+)
 
 AdminMenu.propTypes = {
     onLogout: PropTypes.func.isRequired,
-}
-
-AdminMenu.contextTypes = {
-    router: PropTypes.shape({
-        history: PropTypes.shape({
-            push: PropTypes.func.isRequired,
-            goBack: PropTypes.func.isRequired,
-        }).isRequired,
-    }).isRequired,
 }
 
 export default AdminMenu
