@@ -1,17 +1,29 @@
 import React from 'react';
+import { gql, graphql, compose } from 'react-apollo';
 import { Button, Input, Form, withForm } from '../../antd';
 
-const handleFormSubmit = async data => {
-    console.log('sending data to api', data);
-    // return create('/blogpost', data);
-};
+const withCreateBlogpost = graphql(
+    gql` mutation createBlogpost($title: String!) {
+        createBlogpost(title: $title) {
+            id
+            title
+            slug
+        }
+    }`,
+    {
+        props: ({ mutate, ...props }) => ({
+            ...props,
+            onCreateBlogpost: ({ title }) => mutate({ variables: { title } }),
+        }),
+    }
+);
 
-const Blogpost = ({ form: { getFieldDecorator, getFieldsValue } }) =>
+const Blogpost = ({ onCreateBlogpost, form: { getFieldDecorator, getFieldsValue } }) =>
     <Form
         layout="vertical"
         onSubmit={e => {
             e.preventDefault();
-            handleFormSubmit(getFieldsValue());
+            onCreateBlogpost(getFieldsValue());
         }}
     >
         <h1>Create New Blogpost</h1><br />
@@ -21,4 +33,4 @@ const Blogpost = ({ form: { getFieldDecorator, getFieldsValue } }) =>
         <Button type="primary" htmlType="submit" icon="save">Save</Button>
     </Form>;
 
-export default withForm(Blogpost);
+export default compose(withCreateBlogpost, withForm)(Blogpost);

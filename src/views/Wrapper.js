@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { startCase, upperFirst } from 'lodash';
-import { Link, withRouter } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb, Icon, Button } from '../antd';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { startCase, upperFirst } from 'lodash'
+import { Link, withRouter } from 'react-router-dom'
+import { Layout, Menu, Breadcrumb, Icon, Button } from '../antd'
 
-import Logo from '../components/Logo';
+import Logo from '../components/Logo'
 
 const getRootRoutes = routes => {
     return Object.keys(routes)
         .filter(route => {
-            let parts = route.split('/');
+            let parts = route.split('/')
             return (
                 (parts.length === 2 && parts[1] !== '') || (parts.length === 3 && parts[3] === '')
-            );
+            )
         })
-        .map(route => ({ name: upperFirst(route.split('/')[1]), href: route }));
-};
+        .map(route => ({ name: upperFirst(route.split('/')[1]), href: route }))
+}
 
 const Wrapper = withRouter(({ children, routes, onLogout, history }) =>
     <Layout style={{ minHeight: '100vh' }}>
@@ -24,11 +24,11 @@ const Wrapper = withRouter(({ children, routes, onLogout, history }) =>
                 onClick={({ key }) => {
                     switch (key) {
                         case 'WEBSITE':
-                            return (window.location.href = 'http://kijani.ngo');
+                            return (window.location.href = 'http://kijani.ngo')
                         case 'LOGOUT':
-                            return onLogout();
+                            return onLogout()
                         default:
-                            return history.push(key);
+                            return history.push(key)
                     }
                 }}
                 theme="dark"
@@ -69,10 +69,10 @@ const Wrapper = withRouter(({ children, routes, onLogout, history }) =>
             </Layout.Content>
         </Layout>
     </Layout>
-);
+)
 
 Wrapper.propTypes = {
     onLogout: PropTypes.func.isRequired,
-};
+}
 
-export default Wrapper;
+export default Wrapper

@@ -1,29 +1,44 @@
-import React from 'react';
-import { gql, graphql } from 'react-apollo';
+import React from 'react'
+import { gql, graphql, compose } from 'react-apollo'
+import { Button, Input, Form, withForm } from '../../antd'
 
 const withBlogpostData = graphql(
-    gql`
-        query getBlogpost($slug: String!) {
-            blogpost: Blogpost(slug: $slug) {
+    gql` query getBlogpost($slug: String!) {
+        blogpost: Blogpost(slug: $slug) {
+            id
+            title
+            date: createdAt
+            author {
                 id
-                title
-                date: createdAt
-                author {
-                    id
-                    firstName
-                }
+                firstName
             }
         }
-    `,
+    }`,
     {
         options: ({ slug }) => ({ variables: { slug } }),
     }
-);
+)
 
-const Blogpost = ({ data: { loading, blogpost } }) =>
-    <div>
-        <h1>Edit Blogpost</h1>
+const Blogpost = ({
+    onSaveBlogpost,
+    data: { loading, blogpost },
+    form: { getFieldDecorator, getFieldsValue },
+}) =>
+    <Form
+        layout="vertical"
+        onSubmit={e => {
+            e.preventDefault()
+            const data = getFieldsValue()
+            console.log('saving', data)
+            onSaveBlogpost(data)
+        }}
+    >
+        <h1>Edit '{blogpost && blogpost.title}'</h1><br />
         <pre>{JSON.stringify(blogpost, null, 4)}</pre>
-    </div>;
+        <Form.Item label="Title">
+            {getFieldDecorator('title')(<Input />)}
+        </Form.Item>
+        <Button type="primary" htmlType="submit" icon="save">Save</Button>
+    </Form>
 
-export default withBlogpostData(Blogpost);
+export default compose(withBlogpostData, withForm)(Blogpost)
