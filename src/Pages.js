@@ -17,8 +17,13 @@ export class Datepicker extends React.Component {
         return (
             <div>
                 <h1>Datepicker</h1>
-                <DatePicker style={{ marginTop: 20 }} onChange={value => this.handleChange(value)} />
-                <div style={{ marginTop: 20 }}>Date: {this.state.date && this.state.date.toString()}</div>
+                <DatePicker
+                    style={{ marginTop: 20 }}
+                    onChange={value => this.handleChange(value)}
+                />
+                <div style={{ marginTop: 20 }}>
+                    Date: {this.state.date && this.state.date.toString()}
+                </div>
             </div>
         )
     }

@@ -7,7 +7,8 @@ const Logo = ({ withName, filledLogo, color, style, width }) =>
             height="90px"
             viewBox={`${withName ? 0 : -145} 0 302 90`}
             preserveAspectRatio="xMidYMin slice"
-            style={{ width: '100%', height: '1px', overflow: 'visible' }}>
+            style={{ width: '100%', height: '1px', overflow: 'visible' }}
+        >
             <g fill={color}>
                 {filledLogo
                     ? <g>
@@ -35,7 +36,7 @@ Logo.defaultProps = {
     withName: false,
     filledLogo: false,
     color: '#499948',
-    width: '200px'
+    width: '200px',
 }
 
 export default Logo

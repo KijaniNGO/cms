@@ -1,5 +1,5 @@
-import React from 'react';
-import { Layout, Spin } from '../antd';
+import React from 'react'
+import { Layout, Spin } from '../antd'
 
 export default () =>
     <Layout
@@ -11,4 +11,4 @@ export default () =>
         }}
     >
         <Spin size="large" tip={<p><br />Loading...</p>} delay={0} style={{ marginTop: '100px' }} />
-    </Layout>;
+    </Layout>

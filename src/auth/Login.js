@@ -1,41 +1,41 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Layout, Icon, Button, Form, Input, withForm, Checkbox } from '../antd';
-import Logo from '../components/Logo';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Layout, Icon, Button, Form, Input, withForm, Checkbox } from '../antd'
+import Logo from '../components/Logo'
 
 class Login extends React.Component {
     constructor(props) {
-        super(props);
-        this.state = { failed: false };
-        this.submit = this.submit.bind(this);
-        this.hasErrors = this.hasErrors.bind(this);
+        super(props)
+        this.state = { failed: false }
+        this.submit = this.submit.bind(this)
+        this.hasErrors = this.hasErrors.bind(this)
     }
     componentDidMount() {
-        this.props.form.validateFields();
+        this.props.form.validateFields()
     }
     hasErrors() {
-        const errors = this.props.form.getFieldsError();
-        return Object.keys(errors).some(field => errors[field]);
+        const errors = this.props.form.getFieldsError()
+        return Object.keys(errors).some(field => errors[field])
     }
     async submit(e) {
-        e.preventDefault();
-        const { form, onLogin } = this.props;
+        e.preventDefault()
+        const { form, onLogin } = this.props
         await form.validateFields(async (err, { email, password, remember }) => {
             if (!err) {
-                const success = await onLogin(email, password, remember);
+                const success = await onLogin(email, password, remember)
                 if (!success) {
-                    this.setState({ failed: true });
-                    form.resetFields(['password']);
+                    this.setState({ failed: true })
+                    form.resetFields(['password'])
                 }
             }
-        });
+        })
     }
     render() {
-        const { form } = this.props;
-        const emailError = form.isFieldTouched('email') && form.getFieldError('email');
+        const { form } = this.props
+        const emailError = form.isFieldTouched('email') && form.getFieldError('email')
         const passwordError = this.state.failed
             ? !form.isFieldTouched('password') && 'Wrong Email or Password'
-            : form.isFieldTouched('password') && form.getFieldError('password');
+            : form.isFieldTouched('password') && form.getFieldError('password')
         return (
             <Layout
                 style={{
@@ -115,12 +115,12 @@ class Login extends React.Component {
                     </Form>
                 </div>
             </Layout>
-        );
+        )
     }
 }
 
 Login.propTypes = {
     onLogin: PropTypes.func.isRequired,
-};
+}
 
-export default withForm(Login);
+export default withForm(Login)
