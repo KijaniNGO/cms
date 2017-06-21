@@ -8,6 +8,8 @@ export { default as Button } from 'antd/lib/button';
 export { default as Input } from 'antd/lib/input';
 export { default as Spin } from 'antd/lib/spin';
 export { default as Checkbox } from 'antd/lib/checkbox';
+export { default as Table } from 'antd/lib/table';
+export { default as Modal } from 'antd/lib/modal';
 
 import Form from 'antd/lib/form';
 export const FormItem = Form.Item;

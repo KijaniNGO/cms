@@ -1,13 +1,15 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
 import { AuthProvider, LoginView, LoadingView } from '../auth/';
+
 import Wrapper from './Wrapper';
+import Blogposts from './Blogposts/';
 
 import { Datepicker, Home, PageNotFound } from '../Pages';
 
 const routes = {
     '/datepicker': Datepicker,
+    '/blogposts': Blogposts,
 };
 
 export default () =>

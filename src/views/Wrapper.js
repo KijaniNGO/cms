@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { upperFirst } from 'lodash';
+import { startCase, upperFirst } from 'lodash';
 import { Link, withRouter } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb, Icon, Button } from '../antd';
 
@@ -33,7 +33,7 @@ const Wrapper = withRouter(({ children, routes, onLogout, history }) =>
                 }}
                 theme="dark"
                 mode="inline"
-                defaultSelectedKeys={[history.location.pathname]}
+                defaultSelectedKeys={['/' + history.location.pathname.split('/')[1]]}
             >
                 <Menu.Item key="WEBSITE" style={{ height: '72px', marginLeft: '10px' }}>
                     <Logo width="123px" withName />
@@ -59,7 +59,7 @@ const Wrapper = withRouter(({ children, routes, onLogout, history }) =>
                 <Breadcrumb style={{ margin: '12px 0', width: '80%' }}>
                     {history.location.pathname.split('/').map((item, i, arr) =>
                         <Breadcrumb.Item key={item}>
-                            <Link to={arr.slice(0, i + 1).join('/') + '/'}>{upperFirst(item)}</Link>
+                            <Link to={arr.slice(0, i + 1).join('/') + '/'}>{startCase(item)}</Link>
                         </Breadcrumb.Item>
                     )}
                 </Breadcrumb>
